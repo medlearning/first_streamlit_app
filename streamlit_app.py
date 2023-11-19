@@ -1,6 +1,8 @@
 import streamlit
 import requests
 import pandas as pd
+import snowflake.connector
+from urlib import URLError
 streamlit.title("Breakfast Favorites")
 
 streamlit.header("Breakfast Menu")
@@ -15,7 +17,6 @@ my_fruit_list = my_fruit_list.set_index('Fruit')
 
 # Let's put a pick list here so they can pick the fruit they want to include 
 fruits_selected = streamlit.multiselect("Pick some fruits:", list(my_fruit_list.index), ['Avocado','Strawberries'])
-
 fruits_to_show = my_fruit_list.loc[fruits_selected]
 
 streamlit.dataframe(fruits_to_show)
@@ -31,7 +32,7 @@ fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 # display the dataframe
 streamlit.dataframe(fruityvice_normalized)
 
-import snowflake.connector
+
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
